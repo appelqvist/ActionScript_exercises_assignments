@@ -1,32 +1,29 @@
 package 
 {
+	import flash.events.Event;
 	import flash.geom.Point;
 	public class Ball extends Entity {
-		
-		private var _readyForServe:Boolean = false;;
+		public static const EXIT_LEFT:String = "exit left";
+		public static const EXIT_RIGHT:String = "exit right";
 		
 		public function Ball() {
 			super();
 			draw();
 			reset();
-			_readyForServe = true;
 		}
 		
 		public function serve():void{
-			if(_readyForServe){
-				var speedX:Number, speedY:Number;
-				do{
-					speedX = Utils.random( -1 * Config.BALL_MAX_SPEED, Config.BALL_MAX_SPEED );
-				}while (speedX < Config.BALL_MIN_SPEED && speedX > Config.BALL_MIN_SPEED * -1);
-				
-				do{
-					speedY = Utils.random( -1 * Config.BALL_MAX_SPEED, Config.BALL_MAX_SPEED );
-				}while (speedY < Config.BALL_MIN_SPEED && speedY > Config.BALL_MIN_SPEED * -1);
-				
-				_speedX = speedX;
-				_speedY = speedY;
-				_readyForServe = false;
-			}
+			var speedX:Number, speedY:Number;
+			do{
+				speedX = Utils.random( -1 * Config.BALL_MAX_SPEED, Config.BALL_MAX_SPEED );
+			}while (speedX < Config.BALL_MIN_SPEED && speedX > Config.BALL_MIN_SPEED * -1);
+			
+			do{
+				speedY = Utils.random( -1 * Config.BALL_MAX_SPEED*0.5, Config.BALL_MAX_SPEED*0.5 );
+			}while (speedY < Config.BALL_MIN_SPEED && speedY > Config.BALL_MIN_SPEED * -1);
+			
+			_speedX = speedX;
+			_speedY = speedY;
 		}
 		
 		override public function onCollision(e:Entity):void{
@@ -43,15 +40,22 @@ package
 		
 		override public function boundariesCheck():void{
 			if (top < 0){
+				top = 0;
 				_speedY *= -1;
 			}else if (bottom > Config.WORLD_HEIGHT){
+				bottom = Config.WORLD_HEIGHT;
 				_speedY *= -1;
 			}
 			
 			if (left < 0){
-				_speedX *= -1;
+				left = 0;
+				_speedX = 0;
+				dispatchEvent(new Event(EXIT_LEFT));
+				
 			}else if (right > Config.WORLD_WIDTH){
-				_speedX *= -1;
+				right = Config.WORLD_WIDTH;
+				_speedX = 0;
+				dispatchEvent(new Event(EXIT_RIGHT));
 			}
 		}
 		
@@ -60,7 +64,6 @@ package
 			super.reset();
 			centerX = Config.WORLD_CENTER_X;
 			centerY = Config.WORLD_CENTER_Y;
-			_readyForServe = true;
 		}
 		
 		public function draw():void{

@@ -16,9 +16,16 @@ package
 		
 		public static const PADDLE_FRICTION:Number = 0.93;
 		
+		public static const GAME_WINNING_POINTS:Number = 3;
+		
+		public static const GAME_STATE_MENU:Number = 0;
+		public static const GAME_STATE_PLAY:Number = 1;
+		public static const GAME_STATE_GAMEOVER:Number = 2;
+		public static const GAME_STATE_INSTRUCTIONS:Number = 3;
+		
 		public static const BALL_SIZE:Number = 20;
-		public static const BALL_MAX_SPEED:Number = 16;
-		public static const BALL_MIN_SPEED:Number = 6;
+		public static const BALL_MAX_SPEED:Number = 20;
+		public static const BALL_MIN_SPEED:Number = 9;
 	}
 
-}
+} 

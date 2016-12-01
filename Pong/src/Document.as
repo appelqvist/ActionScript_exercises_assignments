@@ -1,5 +1,6 @@
 package 
 {
+	import assets.GameOver;
 	import com.adobe.tvsdk.mediacore.ABRControlParameters;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -7,7 +8,8 @@ package
 	
 	[SWF(width="1280", height="720", backgroundColor="0x000000", frameRate="30")]
 	public class Document extends Sprite {
-		private var _game:Game;
+		private var _assets:Assets;
+		private var _currentState:IState;
 		
 		public function Document() 
 		{
@@ -21,10 +23,34 @@ package
 		private function init(e:Event = null):void{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			Key.init(stage);
-			_game = new Game();
-			addChild(_game);
+			changeState(Config.GAME_STATE_MENU);
+			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true); 
 			addEventListener(Event.DEACTIVATE, onDeactive, false, 0, true); 
+		}
+		
+		public function changeState(newState:Number):void{
+			if (_currentState != null){
+				_currentState.destroy();
+				removeChild(Sprite(_currentState));
+			}
+			
+			switch(newState){
+				case Config.GAME_STATE_PLAY:
+					_currentState = new Game(this);
+					break;
+				case Config.GAME_STATE_GAMEOVER:
+					_currentState = new GameOver(this);
+					break;
+				case Config.GAME_STATE_INSTRUCTIONS:
+					_currentState = new Instructions(this);
+					break;
+				default:
+					_currentState = new MainMenu(this);
+					break;
+			}
+			
+			addChild(Sprite(_currentState));
 		}
 		
 		private function onDeactive(e:Event):void{
@@ -40,7 +66,8 @@ package
 		}
 		
 		private function onEnterFrame(e:Event):void{
-			_game.update();
+			if(_currentState != null)
+				_currentState.update();
 		}
 		
 	}

@@ -27,7 +27,10 @@ package {
 		public function update():void{
 			this.y += _speedY;
 			this.x += _speedX;
+			boundariesCheck();
 		}
+		
+		public function destroy():void{}
 		
 		public function boundariesCheck():void{ }
 		

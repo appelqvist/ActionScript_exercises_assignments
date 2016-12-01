@@ -9,8 +9,12 @@ package {
 		private static var _keys:Object = {} //Empty object
 		
 		public static const SERVE:uint = Keyboard.SPACE;
+		public static const START:uint = Keyboard.ENTER;
 		public static const LEFT_PADDLE_UP:uint = Keyboard.W;
 		public static const LEFT_PADDLE_DOWN:uint = Keyboard.S;
+		public static const ESC:uint = Keyboard.ESCAPE;
+		public static const PAUSE_ESC:uint = Keyboard.ESCAPE;
+		public static const PAUSE_P:uint = Keyboard.P;
 		
 		public static function init(s:Stage):void{
 			if(!_init){
