@@ -7,7 +7,7 @@ package
 	public class Document extends Sprite 
 	{	
 		private var _entities:Array = [];
-		private var _withBound:Boolean = false; //Change between true and false to switch from wrapping to boundaries
+		private var _withBound:Boolean = true; //Change between true and false to switch from wrapping to boundaries
 		
 		public function Document() 
 		{
