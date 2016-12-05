@@ -3,8 +3,9 @@ package
 	import flash.events.Event;
 	import flash.geom.Point;
 	public class Ball extends Entity {
-		public static const EXIT_LEFT:String = "exit left";
-		public static const EXIT_RIGHT:String = "exit right";
+		public static const EXIT_LEFT:String = "exitLeft";
+		public static const EXIT_RIGHT:String = "exitRight";
+		public static const BOUNCE:String = "onBounce";
 		
 		public function Ball() {
 			super();
@@ -33,8 +34,7 @@ package
 				y += overlap.y;
 				_speedX *= -1;
 				_speedY *= -1;
-				
-				//Maybe fix the angles.
+				dispatchEvent(new Event(BOUNCE));
 			}
 		}
 		
@@ -42,23 +42,23 @@ package
 			if (top < 0){
 				top = 0;
 				_speedY *= -1;
+				dispatchEvent(new Event(BOUNCE));
 			}else if (bottom > Config.WORLD_HEIGHT){
 				bottom = Config.WORLD_HEIGHT;
 				_speedY *= -1;
+				dispatchEvent(new Event(BOUNCE));
 			}
 			
 			if (left < 0){
 				left = 0;
 				_speedX = 0;
 				dispatchEvent(new Event(EXIT_LEFT));
-				
 			}else if (right > Config.WORLD_WIDTH){
 				right = Config.WORLD_WIDTH;
 				_speedX = 0;
 				dispatchEvent(new Event(EXIT_RIGHT));
 			}
 		}
-		
 		
 		override public function reset():void{
 			super.reset();

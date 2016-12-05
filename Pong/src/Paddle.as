@@ -11,6 +11,13 @@ package {
 			reset();
 		}
 	
+		override public function update():void{
+			checkInput();
+			_speedX *= Config.PADDLE_FRICTION;
+			_speedY *= Config.PADDLE_FRICTION;
+			super.update();
+		}
+		
 		private function checkInput():void{
 			if (_isLeft){
 				
@@ -24,13 +31,6 @@ package {
 				var dy:Number = stage.mouseY - this.centerY;
 				_speedY = (dy * 0.1); 
 			}
-		}
-		
-		override public function update():void{
-			checkInput();
-			_speedX *= Config.PADDLE_FRICTION;
-			_speedY *= Config.PADDLE_FRICTION;
-			super.update();
 		}
 		
 		override public function boundariesCheck():void{

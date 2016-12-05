@@ -1,4 +1,4 @@
-package assets{
+package{
 	import flash.display.Sprite;
 	
 	public class GameOver extends Sprite implements IState {

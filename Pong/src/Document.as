@@ -1,15 +1,18 @@
 package 
 {
-	import assets.GameOver;
+	import GameOver;
 	import com.adobe.tvsdk.mediacore.ABRControlParameters;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.GestureEvent;
+	import flash.net.URLRequest;
 	
 	
 	[SWF(width="1280", height="720", backgroundColor="0x000000", frameRate="30")]
 	public class Document extends Sprite {
 		private var _assets:Assets;
 		private var _currentState:IState;
+		private var _backgroundSound:SimpleSound;
 		
 		public function Document() 
 		{
@@ -24,9 +27,10 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			Key.init(stage);
 			changeState(Config.GAME_STATE_MENU);
-			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true); 
-			addEventListener(Event.DEACTIVATE, onDeactive, false, 0, true); 
+			addEventListener(Event.DEACTIVATE, onDeactive, false, 0, true);
+			_backgroundSound = new SimpleSound("./assets/background.mp3", null, true, Config.SOUND_LOW);
+			_backgroundSound.start();
 		}
 		
 		public function changeState(newState:Number):void{
@@ -51,6 +55,14 @@ package
 			}
 			
 			addChild(Sprite(_currentState));
+		}
+		
+		public function onGamePause():void{
+			_backgroundSound.pause();
+		}
+		
+		public function onGameResume():void{
+			_backgroundSound.resume();
 		}
 		
 		private function onDeactive(e:Event):void{

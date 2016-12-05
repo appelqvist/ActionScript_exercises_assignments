@@ -5,12 +5,15 @@ package
 	import flash.events.Event;
 	import flash.events.SoftKeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.utils.setInterval;
 	
 	public class MainMenu extends Sprite implements IState{
 		
 		private var _lblPong:Label;
 		private var _btnStart:SimpleButton;
 		private var _document:Document;
+		
+		private var _soundClick:SimpleSound;
 		
 		public function MainMenu(document:Document){
 			super();	
@@ -19,6 +22,8 @@ package
 			_lblPong.x = Config.WORLD_CENTER_X - _lblPong.textWidth * 0.5;
 			_lblPong.y = 150;
 			addChild(_lblPong);
+			
+			_soundClick = new SimpleSound("./assets/click.mp3");
 			
 			_btnStart = new SimpleButton(Assets.getImage("btnNormal"),
 										Assets.getImage("btnHover"),
@@ -32,6 +37,8 @@ package
 		}
 		
 		private function onClick(e:Event):void{
+			_soundClick.start();
+			setInterval(_soundClick.destroy, 500); //So the we can hear the sound before it is destroyed.
 			_document.changeState(Config.GAME_STATE_INSTRUCTIONS);
 		}
 		
@@ -43,6 +50,7 @@ package
 			removeChild(_btnStart);
 			_btnStart = null;
 			
+			_soundClick = null;
 			_document = null;
 		}
 		

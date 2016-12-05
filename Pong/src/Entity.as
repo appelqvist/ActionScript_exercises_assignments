@@ -30,13 +30,11 @@ package {
 			boundariesCheck();
 		}
 		
-		public function destroy():void{}
+		public function destroy():void{ }
 		
 		public function boundariesCheck():void{ }
 		
-		public function onCollision(e:Entity):void{
-			
-		}
+		public function onCollision(e:Entity):void{ }
 		
 		public function reset():void{
 			_speedX = 0;
