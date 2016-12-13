@@ -8,7 +8,7 @@ package core
 	import states.Play;
 	
 	
-	[SWF(width="1280", height="720", backgroundColor="0x2d2d2d", frameRate="30")]
+	[SWF(width="1280", height="720", backgroundColor="0x111111", frameRate = "50")]
 	public class Game extends Sprite {
 		private var _currentState:State;
 		

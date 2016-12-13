@@ -5,7 +5,9 @@ package states
 	import core.Game;
 	import core.Key;
 	import core.State;
+	import flash.display.Shader;
 	import flash.events.Event;
+	import gameObjects.Ship;
 	
 
 	public class Play extends State{
@@ -13,6 +15,12 @@ package states
 		
 		public function Play(fsm:Game){
 			super(fsm);
+			var s:Ship = new Ship();
+			s.reset();
+			s.x = 100;
+			s.y = 100;
+			s.draw();
+			addEntity(s);
 		}
 		
 		private function addEntity(e:Entity):void{

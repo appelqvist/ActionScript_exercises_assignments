@@ -1,5 +1,7 @@
 package core {
 	import flash.display.Sprite;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	public class Entity extends Sprite {
 		public function get centerY():Number{ return y + (height * 0.5); }
@@ -19,15 +21,34 @@ package core {
 		
 		protected var _speedX:Number;
 		protected var _speedY:Number;
+		protected var _speedRotation:Number;
+		protected var _color:uint = Config.WHITE;
+		protected var _friction:Number = 0.97;
 		
 		public function Entity(){
 			super();
 		}
 		
 		public function update():void{
-			this.y += _speedY;
 			this.x += _speedX;
+			this.y += _speedY;
+			rotate(_speedRotation);
 			boundariesCheck();
+			worldWrap();
+		}
+		
+		private function worldWrap():void{  //Not 100% when going left
+			if (right < 0){
+				left = Config.WORLD_WIDTH;
+			}else if (left > Config.WORLD_WIDTH){
+				right = 0;
+			}
+			
+			if (bottom < 0){
+				top = Config.WORLD_HEIGHT;
+			}else if (top > Config.WORLD_HEIGHT){
+				bottom = 0;
+			}
 		}
 		
 		public function destroy():void{ }
@@ -36,9 +57,20 @@ package core {
 		
 		public function onCollision(e:Entity):void{ }
 		
+		private function rotate(degrees:Number):void{
+			var bounds:Rectangle = this.getBounds(this.parent);
+			var center:Point = new Point(bounds.x + bounds.width*0.5, bounds.y + bounds.height*0.5);
+			this.rotation += degrees;
+			bounds = this.getBounds(this.parent);
+			var newCenter:Point = new Point(bounds.x + bounds.width*0.5, bounds.y + bounds.height*0.5);
+			this.x += center.x - newCenter.x;
+			this.y += center.y - newCenter.y;
+		}
+		
 		public function reset():void{
 			_speedX = 0;
 			_speedY = 0;
+			_speedRotation = 0;
 		}
 		
 	}

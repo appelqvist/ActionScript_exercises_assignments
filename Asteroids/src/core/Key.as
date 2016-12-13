@@ -9,12 +9,11 @@ package core {
 		private static var _keys:Object = {} //Empty object
 		
 		public static const FIRE:uint = Keyboard.SPACE;
-		public static const START:uint = Keyboard.ENTER;
-		public static const LEFT_PADDLE_UP:uint = Keyboard.W;
-		public static const LEFT_PADDLE_DOWN:uint = Keyboard.S;
-		public static const ESC:uint = Keyboard.ESCAPE;
-		public static const PAUSE_ESC:uint = Keyboard.ESCAPE;
-		public static const PAUSE_P:uint = Keyboard.P;
+		public static const ACCELERATE:uint = Keyboard.W;
+		public static const BREAK:uint = Keyboard.S;
+		public static const LEFT:uint = Keyboard.A;
+		public static const RIGHT:uint = Keyboard.D;
+		public static const PAUSE:uint = Keyboard.ESCAPE;
 		
 		public static function init(s:Stage):void{
 			if(!_init){

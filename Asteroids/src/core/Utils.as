@@ -27,12 +27,23 @@ package core {
 			if (dy < dx) {
 				overlap.y = (centerDeltaY < 0) ? -dy : dy;
 			} else if (dy > dx) {
-				overlap.x = (centerDeltaX < 0) ? -dx : dx;
+				overlap.x = (centerDeltaX < 0) ? -dx : wwdx;
 			} else {
 				overlap.x = (centerDeltaX < 0) ? -dx : dx;
 				overlap.y = (centerDeltaY < 0) ? -dy : dy;
 			}
 			return true;
+		}
+		
+		private function centeredRotation(degrees:Number):void{
+			if (degrees == this.rotation){return;}
+			var bounds:Rectangle = this.getBounds(this.parent);
+			var center:Point = new Point(bounds.x + bounds.width*0.5, bounds.y + bounds.height*0.5);
+			this.rotation = degrees;
+			bounds = this.getBounds(this.parent);
+			var newCenter:Point = new Point(bounds.x + bounds.width*0.5, bounds.y + bounds.height*0.5);
+			this.x += center.x - newCenter.x;
+			this.y += center.y - newCenter.y;
 		}
 		
 		public static function IntersectionAABB(e1:core.Entity, e2:core.Entity):Boolean {
