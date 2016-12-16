@@ -1,6 +1,8 @@
 package core {
 	import core.Entity;
 	import flash.geom.Point;
+	import flash.display.BitmapData;
+	import flash.geom.Matrix;
 	
 	public class Utils {
 		

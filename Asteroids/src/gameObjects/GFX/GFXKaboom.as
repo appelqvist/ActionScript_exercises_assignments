@@ -7,7 +7,7 @@ package gameObjects.GFX {
 		private static const minSpeed:Number = -2;
 		private static const maxSpeed:Number = 2;
 		private static const rotationSpeed:Number = 2;
-		private static const fadeAwayConst = 0.98;
+		private static const fadeAwayConst:Number = 0.98;
 		
 		public function GFXKaboom(x:Number, y:Number) {
 			super(x, y, "KABOOM!", 22, Config.LIGHT_ORANGE);

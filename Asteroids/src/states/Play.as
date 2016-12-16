@@ -6,10 +6,10 @@ package states
 	import core.Key;
 	import core.State;
 	import events.AsteroidBreakEvent;
-	import flash.display.Shader;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.text.TextField;
 	import flash.ui.Keyboard;
 	import flash.geom.Point;
 	import gameObjects.Asteroid;
@@ -21,34 +21,42 @@ package states
 	import events.PlayerShotEvent;
 	import core.Utils;
 	import gameObjects.GFX.GFXKaboom;
+	import ui.Label;
+	import ui.GUIPlay;
 
 	public class Play extends State{
+		
 		private var _bullets:Vector.<Entity> = new Vector.<Entity>;
 		private var _asteroids:Vector.<Entity> = new Vector.<Entity>;
 		private var _ship:Ship = new Ship(Config.WORLD_CENTER_X, Config.WORLD_CENTER_Y);
 		private var _gfx:Vector.<Entity> = new Vector.<Entity>;
 		
-		private const ASTEROIDS_SPAWN:Array = [Asteroid.TYPE_BIG, Asteroid.TYPE_BIG, Asteroid.TYPE_MED, Asteroid.TYPE_SMALL];
+		private var _score:Number = 0;
 		
-		public var _collision:Sprite = new Sprite();
+		private var _guiOverLay:GUIPlay = new GUIPlay();
+		
+		private const ASTEROIDS_SPAWN:Array = [Asteroid.TYPE_BIG, Asteroid.TYPE_BIG, Asteroid.TYPE_MED, Asteroid.TYPE_SMALL, Asteroid.TYPE_BIG, Asteroid.TYPE_MED, Asteroid.TYPE_SMALL];
 		
 		public function Play(fsm:Game){
 			super(fsm);
 			_ship.addEventListener(PlayerShotEvent.PLAYER_SHOT, onFire, false, 0, true);
 			Key.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown, false, 0, true);
-			addChild(_collision);
+			
+			//new Label("HEJ",30,Config.WHITE,"Ostrich", true, this.x, this.y
+			_guiOverLay.x = this.x;
+			_guiOverLay.y = this.y;
+			addChild(_guiOverLay);
+			
 			addEntity(_ship);
 			spawnAsteroids();
-			mouseEnabled = false;
-			mouseChildren = false;
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void{
-			trace("pelle");
 			if (e.keyCode == Keyboard.R){
 				spawnAsteroids();
 			}
 		}
+		
 		
 		private function spawnAsteroids():void{
 			for (var i:Number = 0; i < ASTEROIDS_SPAWN.length; i++){
@@ -75,6 +83,7 @@ package states
 				_gfx.push(e);
 			}
 			addChild(e);
+			swapChildren(_guiOverLay, e); //The overlay always highest
 		}
 		
 		private function onAsteroidsBreak(e:AsteroidBreakEvent):void{
@@ -90,7 +99,7 @@ package states
 			while (spawnCount-- > 0){
 				addEntity(new Asteroid(e._x, e._y, newType));
 			}
-			
+			_guiOverLay.updateScore(_score++);
 			addEntity(new GFXKaboom(e._x, e._y));
 			addEntity(new GFXShake());
 		}

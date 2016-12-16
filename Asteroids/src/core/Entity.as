@@ -46,7 +46,6 @@ package core {
 			this.x += _speedX;
 			this.y += _speedY;
 			rotate(_speedRotation);
-			boundariesCheck();
 			worldWrap();
 			updateBounds();
 		}
@@ -57,15 +56,7 @@ package core {
 		
 		public function onCollision(e:Entity):void{
 			kill();
-			drawDebugCollision();
-			//MAYBE A COLLISIOM
 		}	
-		
-		protected function drawDebugCollision():void{
-			Play(parent)._collision.graphics.lineStyle(1, 0xFFF00, 0.7);
-			Play(parent)._collision.graphics.moveTo(centerX, centerY);
-			Play(parent)._collision.graphics.drawCircle(centerX, centerY, this.radius);
-		}
 		
 		protected function worldWrap():void{
 			if (right < 0){
@@ -90,8 +81,6 @@ package core {
 		}
 		
 		public function destroy():void{ }
-		
-		public function boundariesCheck():void{ }
 		
 		private function updateBounds():void{
 			_bounds = this.getBounds(parent);

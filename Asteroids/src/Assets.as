@@ -1,4 +1,6 @@
 package {
+	import flash.display.Bitmap;
+	Bitmap
 	public class Assets {
 		[Embed(source = "assets/OstrichSans-Heavy.otf",
 		fontName = "Ostrich",
@@ -8,5 +10,16 @@ package {
 		embedAsCFF = "false"
 		)]
 		private static const OstrichClass:Class;
+		
+		[Embed(source="assets/sheart.png")]
+		public static const Heart:Class;
+		
+		
+		public static function getImage(name:String):Bitmap{
+			switch(name){
+				default: 
+					return new Heart as Bitmap;
+			}
+		}
 	}
 }

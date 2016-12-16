@@ -67,22 +67,9 @@ package gameObjects
 		}
 		
 		override public function onCollision(e:Entity):void{
-			drawDebugCollision();
+			//Notify play
 		}	
 		
-		override protected function drawDebugCollision():void{
-			super.drawDebugCollision();
-			var globalNose:Point = localToGlobal(_nose);
-			var globalRearL:Point = localToGlobal(_rearLeft);
-			var globalRearR:Point = localToGlobal(_rearRight);
-			
-			Play(parent)._collision.graphics.lineStyle(1, 0xFFFFF0, 0.7);
-			Play(parent)._collision.graphics.moveTo(globalNose.x, globalNose.y);
-			Play(parent)._collision.graphics.lineTo(globalRearL.x, globalRearL.y);
-			Play(parent)._collision.graphics.moveTo(globalNose.x, globalNose.y);
-			Play(parent)._collision.graphics.lineTo(globalRearR.x, globalRearR.y);
-			
-		}
 		
 		override public function update():void{
 			checkInput();
@@ -104,16 +91,6 @@ package gameObjects
 			_speedX *= Config.SHIP_FRICTION;
 			_speedY *= Config.SHIP_FRICTION;
 			_speedRotation *= Config.SHIP_FRICTION;
-
-			
-			//Debug things
-			Sprite(parent).graphics.clear();
-			Sprite(parent).graphics.lineStyle(1, Config.WHITE);
-			Sprite(parent).graphics.moveTo(left, top);
-			Sprite(parent).graphics.lineTo(right, top);
-			Sprite(parent).graphics.lineTo(right, bottom);
-			Sprite(parent).graphics.lineTo(left, bottom);
-			Sprite(parent).graphics.lineTo(left, top);
 			
 			draw();
 			if (_thrust){
