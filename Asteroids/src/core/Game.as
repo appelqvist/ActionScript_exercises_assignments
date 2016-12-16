@@ -6,12 +6,13 @@ package core
 	import flash.events.GestureEvent;
 	import flash.net.URLRequest;
 	import states.Play;
+	import Assets;
 	
 	
 	[SWF(width="1280", height="720", backgroundColor="0x111111", frameRate = "50")]
 	public class Game extends Sprite {
+		public static const ASSETS:Assets = new Assets();
 		private var _currentState:State;
-		
 		public function Game() 
 		{
 			if (stage){

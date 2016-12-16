@@ -2,31 +2,44 @@ package core {
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import states.Play;
 	
 	public class Entity extends Sprite {
-		public function get centerY():Number{ return y + (height * 0.5); }
-		public function set centerY(y:Number):void { this.y = y - (height * 0.5); }
-		public function get centerX():Number{ return x + (width * 0, 5); }
-		public function set centerX(x:Number):void {this.x = x - (width * 0.5); }
 		
-		public function get top():Number{ 		return y; }
-		public function get bottom():Number{ 	return y + height; }
-		public function get left():Number{ 		return x; }
-		public function get right():Number{		return x + width; }
+		public function get centerY():Number{ return _bounds.y + (_bounds.height * 0.5); }
+		public function get centerX():Number{ return _bounds.x + (_bounds.width * 0.5); }
+			
+		public function get halfHeight():Number { return _bounds.height * 0.5; }
+		public function get halfWidth():Number {  return _bounds.width * 0.5; }
 		
-		public function set top(n:Number):void{		y = n; }
-		public function set bottom(n:Number):void{	y = n - height; }
-		public function set left(n:Number):void{	x = n; }
-		public function set right(n:Number):void{	x = n - width; }
+		public function get top():Number{ 		return _bounds.top; }
+		public function get bottom():Number{ 	return _bounds.bottom; }
+		public function get left():Number{ 		return _bounds.left; }
+		public function get right():Number{		return _bounds.right; }
+		public function get radius():Number{	return (_bounds.width + _bounds.height) * 0.25; }
 		
-		protected var _speedX:Number;
-		protected var _speedY:Number;
-		protected var _speedRotation:Number;
+		public function set top(y:Number):void{		this.y = y + _offset.y; 				   updateBounds(); }
+		public function set bottom(y:Number):void{	this.y = (y - _bounds.height) + _offset.y; updateBounds(); }
+		public function set left(x:Number):void{	this.x = x + _offset.x;					   updateBounds(); }
+		public function set right(x:Number):void{	this.x = (x - _bounds.width) + _offset.x;  updateBounds(); }
+		
+		public function set centerX(x:Number):void { this.x = x - (_bounds.width * 0.5) + _offset.x;  updateBounds(); }
+		public function set centerY(y:Number):void { this.y = y - (_bounds.height * 0.5) + _offset.y; updateBounds(); }
+		
+		protected var _bounds:Rectangle = new Rectangle();
+		protected var _offset:Point = new Point();
+		
+		protected var _speedX:Number = 0;
+		protected var _speedY:Number = 0;
+		protected var _speedRotation:Number = 0;
 		protected var _color:uint = Config.WHITE;
 		protected var _friction:Number = 0.97;
+		protected var _alive:Boolean = true;
 		
-		public function Entity(){
+		public function Entity(x:Number, y:Number){
 			super();
+			this.x = x;
+			this.y = y;
 		}
 		
 		public function update():void{
@@ -35,9 +48,26 @@ package core {
 			rotate(_speedRotation);
 			boundariesCheck();
 			worldWrap();
+			updateBounds();
 		}
 		
-		private function worldWrap():void{  //Not 100% when going left
+		public function isColliding(e:Entity):Boolean{
+			return (Utils.distanceSq(this, e) < this.radius * this.radius + e.radius * e.radius);
+		}
+		
+		public function onCollision(e:Entity):void{
+			kill();
+			drawDebugCollision();
+			//MAYBE A COLLISIOM
+		}	
+		
+		protected function drawDebugCollision():void{
+			Play(parent)._collision.graphics.lineStyle(1, 0xFFF00, 0.7);
+			Play(parent)._collision.graphics.moveTo(centerX, centerY);
+			Play(parent)._collision.graphics.drawCircle(centerX, centerY, this.radius);
+		}
+		
+		protected function worldWrap():void{
 			if (right < 0){
 				left = Config.WORLD_WIDTH;
 			}else if (left > Config.WORLD_WIDTH){
@@ -51,11 +81,23 @@ package core {
 			}
 		}
 		
+		public function isAlive():Boolean{
+			return _alive;
+		}
+		
+		public function kill():void{
+			_alive = false;
+		}
+		
 		public function destroy():void{ }
 		
 		public function boundariesCheck():void{ }
 		
-		public function onCollision(e:Entity):void{ }
+		private function updateBounds():void{
+			_bounds = this.getBounds(parent);
+			_offset.x = this.x - _bounds.left;
+			_offset.y = this.y - _bounds.top;
+		}
 		
 		private function rotate(degrees:Number):void{
 			var bounds:Rectangle = this.getBounds(this.parent);
