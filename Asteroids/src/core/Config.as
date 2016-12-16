@@ -12,11 +12,6 @@ package core
 		
 		public static const LINE_SIZE:Number = 2;
 		
-		public static const GAME_STATE_MENU:Number = 0;
-		public static const GAME_STATE_PLAY:Number = 1;
-		public static const GAME_STATE_GAMEOVER:Number = 2;
-		public static const GAME_STATE_INSTRUCTIONS:Number = 3;
-		
 		public static const SHIP_WIDTH:Number = 30;
 		public static const SHIP_HEIGHT:Number = 15;
 		public static const SHIP_TOP_SPEED:Number = 10;
@@ -25,7 +20,7 @@ package core
 		public static const SHIP_TOT_LIVES:Number = 3;
 		
 		public static const BULLET_IMPULSE:Number = 10;
-		public static const BULLET_TIME_TO_LIVE:Number = 60; //frames
+		public static const BULLET_TIME_TO_LIVE:Number = 30; //frames
 		
 		public static const SOUND_VERY_LOW:Number = 0.1;
 		public static const SOUND_LOW:Number = 0.25;
@@ -35,6 +30,12 @@ package core
 		
 		public static const TO_RAD:Number = (Math.PI / 180);
 		public static const TO_DEG:Number = (180 / Math.PI);
+		
+		public static const SFX_SHOOT_URL:String = "./assets/shoot.mp3";
+		public static const SFX_EXPLOSION_URL:String = "./assets/explosion.mp3";
+		public static const SFX_HIT_URL:String = "./assets/hit.mp3";
+		public static const SFX_BACKGROUND_URL:String = "./assets/background.mp3";
+		
 	
 
 	}

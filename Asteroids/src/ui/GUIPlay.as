@@ -1,5 +1,6 @@
 package ui 
 {
+	import com.adobe.tvsdk.mediacore.TextFormat;
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -39,7 +40,8 @@ package ui
 		}
 		
 		public function updateScore(currentScore:Number):void{
-			_lblScore.text = ""+currentScore;
+			_lblScore.text = "" + currentScore;
+			_lblScore.x = Config.WORLD_WIDTH - _lblScore.textWidth - _offset;
 		}
 		
 		public function initLives():void{

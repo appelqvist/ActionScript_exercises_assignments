@@ -3,6 +3,7 @@ package gameObjects
 	import core.Entity;
 	import core.Key;
 	import core.Config;
+	import events.PlayerHitEvent;
 	import events.PlayerShotEvent;
 	import flash.geom.Point;
 	import flash.utils.getTimer;
@@ -67,7 +68,7 @@ package gameObjects
 		}
 		
 		override public function onCollision(e:Entity):void{
-			//Notify play
+			dispatchEvent(new PlayerHitEvent());
 		}	
 		
 		

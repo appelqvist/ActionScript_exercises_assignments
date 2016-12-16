@@ -4,8 +4,11 @@ package states
 	import core.Entity;
 	import core.Game;
 	import core.Key;
+	import core.SimpleSound;
+	import core.SoundManager;
 	import core.State;
 	import events.AsteroidBreakEvent;
+	import events.PlayerHitEvent;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -31,24 +34,24 @@ package states
 		private var _ship:Ship = new Ship(Config.WORLD_CENTER_X, Config.WORLD_CENTER_Y);
 		private var _gfx:Vector.<Entity> = new Vector.<Entity>;
 		
+		private var _shipLivesLeft:Number;
 		private var _score:Number = 0;
+		private var _running:Boolean = true;
 		
 		private var _guiOverLay:GUIPlay = new GUIPlay();
 		
-		private const ASTEROIDS_SPAWN:Array = [Asteroid.TYPE_BIG, Asteroid.TYPE_BIG, Asteroid.TYPE_MED, Asteroid.TYPE_SMALL, Asteroid.TYPE_BIG, Asteroid.TYPE_MED, Asteroid.TYPE_SMALL];
+		private const ASTEROIDS_SPAWN:Array = [Asteroid.TYPE_BIG, Asteroid.TYPE_MED];
 		
-		public function Play(fsm:Game){
-			super(fsm);
+		public function Play(fsm:Game, _soundManager:SoundManager){
+			super(fsm, _soundManager);
+			_shipLivesLeft = Config.SHIP_TOT_LIVES;
 			_ship.addEventListener(PlayerShotEvent.PLAYER_SHOT, onFire, false, 0, true);
+			_ship.addEventListener(PlayerHitEvent.PLAYER_HIT, onShipGotHit, false, 0, true);
 			Key.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown, false, 0, true);
-			
-			//new Label("HEJ",30,Config.WHITE,"Ostrich", true, this.x, this.y
 			_guiOverLay.x = this.x;
 			_guiOverLay.y = this.y;
 			addChild(_guiOverLay);
-			
 			addEntity(_ship);
-			spawnAsteroids();
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void{
@@ -56,7 +59,6 @@ package states
 				spawnAsteroids();
 			}
 		}
-		
 		
 		private function spawnAsteroids():void{
 			for (var i:Number = 0; i < ASTEROIDS_SPAWN.length; i++){
@@ -71,6 +73,17 @@ package states
 			var b:Bullet = new Bullet(e._x, e._y, e._direction);
 			addEntity(new GFXPaw(e._x, e._y));
 			addEntity(b);
+			_soundManager.playShoot();
+		}
+		
+		private function onShipGotHit(e:PlayerHitEvent):void{
+			_soundManager.playHit();
+			_shipLivesLeft--;
+			if (_shipLivesLeft > 0){
+				_guiOverLay.removeLive();
+			}else{
+				_ship.kill();
+			}
 		}
 		
 		private function addEntity(e:Entity):void{
@@ -99,7 +112,9 @@ package states
 			while (spawnCount-- > 0){
 				addEntity(new Asteroid(e._x, e._y, newType));
 			}
-			_guiOverLay.updateScore(_score++);
+			_score++;
+			_soundManager.playExplosion();
+			_guiOverLay.updateScore(_score);
 			addEntity(new GFXKaboom(e._x, e._y));
 			addEntity(new GFXShake());
 		}
@@ -108,7 +123,7 @@ package states
 			var entities:Vector.<Entity> = _asteroids.concat(_bullets, _gfx);
 			if (inclShip){
 				entities.push(_ship);
-			}
+			} 
 			return entities;
 		}
 		
@@ -140,7 +155,7 @@ package states
 				if(a.isColliding(_ship)){
 					_ship.onCollision(a);
 					a.onCollision(_ship);
-					break; //Ship will have lives
+					break; 
 				}
 			}
 		}
@@ -149,22 +164,27 @@ package states
 			removeDeadEntities(_bullets);
 			removeDeadEntities(_asteroids);
 			removeDeadEntities(_gfx);
+			
 			if (!_ship.isAlive()){
-				_ship.destroy();
-				removeChild(_ship);
-				//GAME OVER!!
+				_running = false;
 			}
 		}
 		
 		override public function update():void{
+			if (_asteroids.length < 10){
+				spawnAsteroids();
+			}
+			
 			var allEntities:Vector.<Entity> = getAllEntities(true);
 			for (var i:Number = 0; i < allEntities.length; i++){ 
 				allEntities[i].update();
 			}
 			checkCollisions();
 			checkAllDeadEntities();
+			if (!_running){
+				_fsm.changeState(Game.GAME_STATE_GAMEOVER, _score);
+			}
 		}
-		
 		
 		override public function destroy():void{
 			var entities:Vector.<Entity> = getAllEntities(true);
@@ -172,10 +192,13 @@ package states
 				entities[i].kill();
 			}
 			checkAllDeadEntities();
-			_ship = null;
+			_guiOverLay.destroy();
+			removeChild(_guiOverLay);
+			_guiOverLay = null;
+			
+			_ship.removeEventListener(PlayerShotEvent.PLAYER_SHOT, onFire);
+			_ship.removeEventListener(PlayerHitEvent.PLAYER_HIT, onShipGotHit);
 			super.destroy();
-		}
-		
+		}	
 	}
-
 }

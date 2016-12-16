@@ -4,12 +4,13 @@ package core
 	
 	public class State extends Sprite 
 	{
-		private var _fsm:Game;
+		protected var _fsm:Game;
+		protected var _soundManager:SoundManager;
 		
-		public function State(fsm:Game) 
-		{
+		public function State(fsm:Game, soundManager:SoundManager){
 			super();
 			_fsm = fsm;
+			_soundManager = soundManager;
 		}
 		
 		public function update():void{

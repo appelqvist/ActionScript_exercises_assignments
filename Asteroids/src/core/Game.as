@@ -5,16 +5,23 @@ package core
 	import flash.events.Event;
 	import flash.events.GestureEvent;
 	import flash.net.URLRequest;
+	import states.GameOver;
+	import states.Menu;
 	import states.Play;
 	import Assets;
 	
 	
-	[SWF(width="1280", height="720", backgroundColor="0x111111", frameRate = "50")]
+	[SWF(width="1280", height="720", backgroundColor="0x111111", frameRate = "30")]
 	public class Game extends Sprite {
 		public static const ASSETS:Assets = new Assets();
 		private var _currentState:State;
-		public function Game() 
-		{
+		private var _soundManager:SoundManager = new SoundManager();
+		
+		public static const GAME_STATE_MENU:Number = 0;
+		public static const GAME_STATE_PLAY:Number = 1;
+		public static const GAME_STATE_GAMEOVER:Number = 2;
+		
+		public function Game() {
 			if (stage){
 				init();
 			}else{
@@ -25,22 +32,27 @@ package core
 		private function init(e:Event = null):void{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			Key.init(stage);
-			changeState(core.Config.GAME_STATE_PLAY);
+			changeState(GAME_STATE_MENU);
 			addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true); 
 			addEventListener(Event.DEACTIVATE, onDeactive, false, 0, true);
+			_soundManager.playBackground();
 		}
 		
-		public function changeState(newState:Number):void{
+		public function changeState(newState:Number, score:Number = 0):void{
 			if (_currentState != null){
 				_currentState.destroy();
 				removeChild(Sprite(_currentState));
 			}
 			
 			switch(newState){
-				case core.Config.GAME_STATE_PLAY:
-					_currentState = new Play(this);
+				case GAME_STATE_PLAY:
+					_currentState = new Play(this, _soundManager);
+					break;
+				case GAME_STATE_GAMEOVER:
+					_currentState = new GameOver(this, _soundManager, score);
 					break;
 				default:
+					_currentState = new Menu(this, _soundManager);
 					break;
 			}
 			
