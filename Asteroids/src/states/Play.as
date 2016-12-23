@@ -224,7 +224,7 @@ package states
 		
 		override public function update():void{
 			
-			if (_asteroids.length < 10){
+			if (_asteroids.length < 5){
 				spawnAsteroids();
 			}
 			
