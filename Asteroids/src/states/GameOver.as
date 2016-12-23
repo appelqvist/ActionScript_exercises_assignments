@@ -8,6 +8,7 @@ package states
 	import core.Key;
 	import flash.events.KeyboardEvent;
 	import flash.utils.setInterval;
+	import core.Utils;
 	
 	public class GameOver extends State{
 		
@@ -18,13 +19,13 @@ package states
 		
 		public function GameOver(fsm:Game, soundManager:SoundManager, score:Number){
 			super(fsm, soundManager);	
-			_lblYourScore = new Label("YOUR SCORE WAS: "+score, 70, Config.WHITE, "Ostrich", true);
-			_lblYourScore.x = Config.WORLD_CENTER_X - _lblYourScore.textWidth * 0.5;
+			_lblYourScore = new Label("YOUR SCORE WAS: "+score, 70, Config.getColor("hex", ["color", "white"]), "Ostrich", true);
+			_lblYourScore.x = Utils.getWorldCenter().x - _lblYourScore.textWidth * 0.5;
 			_lblYourScore.y = 150;	
 			
-			_lblStartOver = new Label("PRESS ANY KEY TO START OVER", 45, Config.WHITE, "Ostrich", true);
-			_lblStartOver.x = Config.WORLD_CENTER_X - _lblStartOver.textWidth * 0.5;
-			_lblStartOver.y = Config.WORLD_HEIGHT - _lblStartOver.textHeight - 50;
+			_lblStartOver = new Label("PRESS ANY KEY TO START OVER", 45, Config.getColor("hex", ["color", "white"]), "Ostrich", true);
+			_lblStartOver.x = Utils.getWorldCenter().x - _lblStartOver.textWidth * 0.5;
+			_lblStartOver.y = Config.getNumber("height", ["world"]) - _lblStartOver.textHeight - 50;
 			
 			addChild(_lblYourScore);
 			Key.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown, false, 0, true);
@@ -50,7 +51,6 @@ package states
 			_lblYourScore = null;
 			removeChild(_lblStartOver);
 			_lblYourScore = null;
-			trace("s");
 			Key.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			super.destroy();
 		}

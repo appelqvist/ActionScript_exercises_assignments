@@ -16,7 +16,7 @@ package core{
 		private var _validTrack:Boolean = false; 
 		
 		public function SimpleSound(path:String = "", context:SoundLoaderContext = null,
-									loop:Boolean = false, volume:Number = Config.SOUND_MED) {
+									loop:Boolean = false, volume:Number = 0.5) {
 			addEventListener(IOErrorEvent.IO_ERROR, notFound);
 			var stream:URLRequest = new URLRequest(path);
 			super(stream, context);

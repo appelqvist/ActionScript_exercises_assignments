@@ -11,7 +11,7 @@ package ui
 		
 		private var _format:TextFormat;
 		
-		public function Label(text:String, size:Number = 30, color:uint = Config.WHITE, fontName:String="Times New Roman", embededFonts:Boolean=false, posX:Number=100, posY:Number=100) {
+		public function Label(text:String, size:Number = 30, color:uint = 0xFFFFF, fontName:String="Times New Roman", embededFonts:Boolean=false, posX:Number=100, posY:Number=100) {
 			super();
 			_format = new TextFormat(fontName, size, color);
 			_format.align = TextFormatAlign.LEFT;

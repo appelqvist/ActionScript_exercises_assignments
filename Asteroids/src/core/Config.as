@@ -1,43 +1,100 @@
 package core 
 {
-	public class Config {
-		public static const BLACK:uint = 0x111111;
-		public static const WHITE:uint = 0xFFFFFF;
-		public static const LIGHT_ORANGE:uint = 0xff6735;
-		
-		public static const WORLD_WIDTH:Number = 1280;
-		public static const WORLD_HEIGHT:Number = 720;
-		public static const WORLD_CENTER_X:Number = WORLD_WIDTH * 0.5;
-		public static const WORLD_CENTER_Y:Number = WORLD_HEIGHT * 0.5;
-		
-		public static const LINE_SIZE:Number = 2;
-		
-		public static const SHIP_WIDTH:Number = 30;
-		public static const SHIP_HEIGHT:Number = 15;
-		public static const SHIP_TOP_SPEED:Number = 10;
-		public static const SHIP_FRICTION:Number = 0.96;
-		public static const SHIP_RATE_OF_FIRE:Number = 100;
-		public static const SHIP_TOT_LIVES:Number = 3;
-		
-		public static const BULLET_IMPULSE:Number = 10;
-		public static const BULLET_TIME_TO_LIVE:Number = 30; //frames
-		
-		public static const SOUND_VERY_LOW:Number = 0.1;
-		public static const SOUND_LOW:Number = 0.25;
-		public static const SOUND_MED:Number = 0.5;
-		public static const SOUND_HIGH:Number = 0.7;
-		public static const SOUND_HIGHEST:Number = 1;
-		
-		public static const TO_RAD:Number = (Math.PI / 180);
-		public static const TO_DEG:Number = (180 / Math.PI);
-		
-		public static const SFX_SHOOT_URL:String = "./assets/shoot.mp3";
-		public static const SFX_EXPLOSION_URL:String = "./assets/explosion.mp3";
-		public static const SFX_HIT_URL:String = "./assets/hit.mp3";
-		public static const SFX_BACKGROUND_URL:String = "./assets/background.mp3";
-		
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+    import flash.events.*;
+    import flash.net.*;
 	
+	public class Config {
+		private static var _dispatcher:EventDispatcher = new EventDispatcher; 
+		private static var _cache:Object = {};
+		private static var _data:XML;
+		
+		public static function getSettings(key:String, path:Array):String{
+			var hashKey:String = path.toString()+key;
+			if (_cache[hashKey] != undefined){
+				return _cache[hashKey];
+			}
+			
+			var xml:XMLList = Config._data[path[0]];
+			if (path.length > 1){
+				for (var i:Number = 1; i < path.length; i++){
+					xml = xml[path[i]];
+				}
+			}
+			var value:String = xml.attribute(key)
+			_cache[hashKey] = value;
+			return value;
+		}
+		
+		
+		public static function loadConfig():void{
+			var loader:URLLoader = new URLLoader();
+			var url:URLRequest = new URLRequest("settings.xml");
+			
+			loader.addEventListener(Event.COMPLETE, Config.completeHandler, false, 0, true);
+            loader.addEventListener(Event.OPEN, Config.openHandler, false, 0, true);
+            loader.addEventListener(ProgressEvent.PROGRESS, Config.progressHandler, false, 0, true);
+            loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, Config.securityErrorHandler, false, 0, true);
+            loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, Config.httpStatusHandler, false, 0, true);
+            loader.addEventListener(IOErrorEvent.IO_ERROR, Config.ioErrorHandler, false, 0, true);
+			
+			try{
+				loader.load(url);
+			}catch (error:Error){
+				trace("Error when loading: " + error);
+			}
+		}
 
+        private static function completeHandler(event:Event):void {
+            var loader:URLLoader = URLLoader(event.target);
+			var data:XML = XML(loader.data);
+			Config._data = data;
+			dispatchEvent(event);
+        }
+
+		public static function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void {
+			_dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		}
+		public static function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void {
+			_dispatcher.removeEventListener(type, listener, useCapture);
+		}
+		public static function dispatchEvent(event:Event):Boolean {
+			return _dispatcher.dispatchEvent(event);
+		}
+		public static function hasEventListener(type:String):Boolean {
+			return _dispatcher.hasEventListener(type);
+		}
+		public static function willTrigger(type:String):Boolean {
+			return willTrigger(type);
+		}	
+        private static function openHandler(event:Event):void {
+            trace("openHandler: " + event);
+        }
+        private static function progressHandler(event:ProgressEvent):void {
+            trace("progressHandler loaded:" + event.bytesLoaded + " total: " + event.bytesTotal);
+        }
+        private static function securityErrorHandler(event:SecurityErrorEvent):void {
+            trace("securityErrorHandler: " + event);
+        }
+        private static function httpStatusHandler(event:HTTPStatusEvent):void {
+            trace("httpStatusHandler: " + event);
+        }
+        private static function ioErrorHandler(event:IOErrorEvent):void {
+            trace("ioErrorHandler: " + event);
+}
+		public static function getInt(key:String, path:Array):int{
+			 return parseInt(getSettings(key, path));
+		}
+		public static function getNumber(key:String, path:Array):Number{
+			return parseFloat(getSettings(key, path));
+		}
+		public static function getBoolean(key:String, path:Array):Boolean{
+			var s:String = getSettings(key, path);
+			return (s == "1" || s == "true");
+		}
+		public static function getColor(key:String, path:Array):uint{
+			return parseInt(getSettings(key, path));}
+	
 	}
-
 } 

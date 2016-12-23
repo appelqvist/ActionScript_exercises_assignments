@@ -2,17 +2,18 @@ package gameObjects
 {
 	import core.Entity;
 	import core.Config;
+	import core.Utils;
 	import flash.display.CapsStyle;
 	import flash.display.LineScaleMode;
 	
 	public class Bullet extends Entity{	
-		private var timeToLive:Number = Config.BULLET_TIME_TO_LIVE;
+		private var timeToLive:Number = Config.getNumber("time_to_live", ["entities", "bullet"]);
 		
 		public function Bullet(x:Number, y:Number, direction:Number){
 			super(x,y);
-			var radians:Number = direction * Config.TO_RAD
-			_speedX = Math.cos(radians) * Config.BULLET_IMPULSE;
-			_speedY = Math.sin(radians) * Config.BULLET_IMPULSE;
+			var radians:Number = Utils.convertToRad(direction);
+			_speedX = Math.cos(radians) * Config.getNumber("impulse", ["entities", "bullet"]);
+			_speedY = Math.sin(radians) * Config.getNumber("impulse", ["entities", "bullet"]);
 			draw();
 		}
 	

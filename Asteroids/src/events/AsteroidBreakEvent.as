@@ -8,10 +8,10 @@ package events
 		
 		public var _x:Number = 0;
 		public var _y:Number = 0;
-		public var _type:Number = 0; //Asteriod size/type
+		public var _type:String = "";
 		
 		
-		public function AsteroidBreakEvent(x:Number, y:Number, type:Number) {
+		public function AsteroidBreakEvent(x:Number, y:Number, type:String) {
 			super(ASTEROID_BREAK, false , false);
 			_x = x;
 			_y = y;

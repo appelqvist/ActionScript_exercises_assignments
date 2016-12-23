@@ -6,6 +6,19 @@ package core {
 	
 	public class Utils {
 		
+		public static function getWorldCenter():Point{
+			var centerPoint:Point = new Point(Config.getNumber("width", ["world"]) * 0.5, Config.getNumber("height", ["world"]) * 0.5);
+			return centerPoint;
+		}
+		
+		public static function convertToRad(degrees:Number):Number{
+			return degrees * (Math.PI / 180);
+		}
+		
+		public static function convertToDegrees(radian:Number):Number{
+			return radian * (180 / Math.PI);
+		}
+		
 		public static function random(min:Number, max:Number):Number{
 			return Math.floor(Math.random() * (max - min)) + min;
 		}

@@ -9,7 +9,7 @@ package gameObjects.GFX {
 		private static const fadeAwayConst:Number = 0.85;
 		
 		public function GFXPaw(x:Number, y:Number){
-			super(x, y, "PAW!", 15, Config.LIGHT_ORANGE);
+			super(x, y, "PAW!", 15, Config.getColor("hex", ["color", "light_orange"]));
 			_speedX = Utils.random(minSpeed, maxSpeed);
 			_speedY = Utils.random(minSpeed, maxSpeed);
 		}

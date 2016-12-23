@@ -15,26 +15,28 @@ package core
 	public class Game extends Sprite {
 		public static const ASSETS:Assets = new Assets();
 		private var _currentState:State;
-		private var _soundManager:SoundManager = new SoundManager();
+		private var _soundManager:SoundManager;
 		
 		public static const GAME_STATE_MENU:Number = 0;
 		public static const GAME_STATE_PLAY:Number = 1;
 		public static const GAME_STATE_GAMEOVER:Number = 2;
 		
 		public function Game() {
-			if (stage){
-				init();
-			}else{
-				addEventListener(Event.ADDED_TO_STAGE, init);
-			}
+			Config.addEventListener(Event.COMPLETE, init, false, 0, true);
+			Config.loadConfig();
 		}
 		
 		private function init(e:Event = null):void{
+			if (!stage){
+				addEventListener(Event.ADDED_TO_STAGE, init, false, 0, true);
+				return;
+			}
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			Key.init(stage);
 			changeState(GAME_STATE_MENU);
 			addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true); 
 			addEventListener(Event.DEACTIVATE, onDeactive, false, 0, true);
+			_soundManager = new SoundManager();
 			_soundManager.playBackground();
 		}
 		

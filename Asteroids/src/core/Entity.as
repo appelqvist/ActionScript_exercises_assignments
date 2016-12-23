@@ -32,8 +32,7 @@ package core {
 		protected var _speedX:Number = 0;
 		protected var _speedY:Number = 0;
 		protected var _speedRotation:Number = 0;
-		protected var _color:uint = Config.WHITE;
-		protected var _friction:Number = 0.97;
+		protected var _color:uint = Config.getColor("color", ["entities"]);
 		protected var _alive:Boolean = true;
 		
 		public function Entity(x:Number, y:Number){
@@ -60,14 +59,14 @@ package core {
 		
 		protected function worldWrap():void{
 			if (right < 0){
-				left = Config.WORLD_WIDTH;
-			}else if (left > Config.WORLD_WIDTH){
+				left = Config.getNumber("width", ["world"]);
+			}else if (left > Config.getNumber("width", ["world"])){
 				right = 0;
 			}
 			
 			if (bottom < 0){
-				top = Config.WORLD_HEIGHT;
-			}else if (top > Config.WORLD_HEIGHT){
+				top = Config.getNumber("height", ["world"]);
+			}else if (top > Config.getNumber("height", ["world"])){
 				bottom = 0;
 			}
 		}

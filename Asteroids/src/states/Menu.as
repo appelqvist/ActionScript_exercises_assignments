@@ -6,6 +6,8 @@ package states
 	import ui.Label;
 	import core.Config;
 	import core.Key;
+	import core.Utils;
+	import flash.geom.Point;
 	import flash.events.KeyboardEvent;
 	
 	public class Menu extends State {
@@ -23,37 +25,37 @@ package states
 		
 		public function Menu(fsm:Game, soundManager:SoundManager){
 			super(fsm, soundManager);
-			_lblAsteroids = new Label("MY ASTEROIDS", 90, Config.WHITE, "Ostrich", true);
-			_lblAsteroids.x = Config.WORLD_CENTER_X - _lblAsteroids.textWidth * 0.5;
+			_lblAsteroids = new Label("MY ASTEROIDS", 90, Config.getColor("hex", ["color", "white"]), "Ostrich", true);
+			_lblAsteroids.x = Utils.getWorldCenter().x - _lblAsteroids.textWidth * 0.5;
 			_lblAsteroids.y = 50;
 			
-			_lblInstructionsTitle = new Label("HERE IS SOME INSTRUCTIONS YOU WILL NEED:", 40, Config.WHITE, "Ostrich", true);
-			_lblInstructionsTitle.x = Config.WORLD_CENTER_X - _lblInstructionsTitle.textWidth * 0.5;
+			_lblInstructionsTitle = new Label("HERE IS SOME INSTRUCTIONS YOU WILL NEED:", 40,Config.getColor("hex", ["color", "white"]), "Ostrich", true);
+			_lblInstructionsTitle.x = Utils.getWorldCenter().x - _lblInstructionsTitle.textWidth * 0.5;
 			_lblInstructionsTitle.y = 200;
 			
-			_lblControls = new Label("CONTROL THE SHIP WITH: W A D", 37, Config.WHITE, "Ostrich", true);
-			_lblControls.x = Config.WORLD_CENTER_X - _lblControls.textWidth * 0.5;
+			_lblControls = new Label("CONTROL THE SHIP WITH: W A D", 37, Config.getColor("hex", ["color", "white"]), "Ostrich", true);
+			_lblControls.x = Utils.getWorldCenter().x - _lblControls.textWidth * 0.5;
 			_lblControls.y = 250;
 			
-			_lblFire = new Label("FIRE BULLETS USING SPACE", 37, Config.WHITE, "Ostrich", true);
-			_lblFire.x = Config.WORLD_CENTER_X - _lblFire.textWidth * 0.5;
+			_lblFire = new Label("FIRE BULLETS USING SPACE", 37, Config.getColor("hex", ["color", "white"]), "Ostrich", true);
+			_lblFire.x = Utils.getWorldCenter().x - _lblFire.textWidth * 0.5;
 			_lblFire.y = 300;
 			
-			_lblPause = new Label("PAUSE WITH ESC", 37, Config.WHITE, "Ostrich", true);
-			_lblPause.x = Config.WORLD_CENTER_X - _lblPause.textWidth * 0.5;
+			_lblPause = new Label("PAUSE WITH ESC", 37, Config.getColor("hex", ["color", "white"]), "Ostrich", true);
+			_lblPause.x = Utils.getWorldCenter().x - _lblPause.textWidth * 0.5;
 			_lblPause.y = 350;
 			
-			_lblLivesIns = new Label("YOU HAVE "+Config.SHIP_TOT_LIVES+" LIVES!", 37, Config.WHITE, "Ostrich", true);
-			_lblLivesIns.x = Config.WORLD_CENTER_X - _lblLivesIns.textWidth * 0.5;
+			_lblLivesIns = new Label("YOU HAVE "+Config.getNumber("tot_lives", ["entities", "ship"])+" LIVES!", 37, Config.getColor("hex", ["color", "white"]), "Ostrich", true);
+			_lblLivesIns.x = Utils.getWorldCenter().x - _lblLivesIns.textWidth * 0.5;
 			_lblLivesIns.y = 450;
 			
-			_lblHighestScoreIns = new Label("HIGHEST SCORE WILL WIN!", 37, Config.WHITE, "Ostrich", true);
-			_lblHighestScoreIns.x = Config.WORLD_CENTER_X - _lblHighestScoreIns.textWidth * 0.5;
+			_lblHighestScoreIns = new Label("HIGHEST SCORE WILL WIN!", 37, Config.getColor("hex", ["color", "white"]), "Ostrich", true);
+			_lblHighestScoreIns.x = Utils.getWorldCenter().x - _lblHighestScoreIns.textWidth * 0.5;
 			_lblHighestScoreIns.y = 500;
 			
-			_lblAnyKeyStart = new Label("PRESS ANY KEY TO START", 45, Config.WHITE, "Ostrich", true);
-			_lblAnyKeyStart.x = Config.WORLD_CENTER_X - _lblAnyKeyStart.textWidth * 0.5;
-			_lblAnyKeyStart.y = Config.WORLD_HEIGHT - _lblAnyKeyStart.textHeight - 50;
+			_lblAnyKeyStart = new Label("PRESS ANY KEY TO START", 45, Config.getColor("hex", ["color", "white"]), "Ostrich", true);
+			_lblAnyKeyStart.x = Utils.getWorldCenter().x - _lblAnyKeyStart.textWidth * 0.5;
+			_lblAnyKeyStart.y = Config.getNumber("height", ["world"])- _lblAnyKeyStart.textHeight - 50;
 			
 			
 			addChild(_lblAsteroids);
@@ -70,7 +72,6 @@ package states
 		
 		private function onKeyDown(e:KeyboardEvent):void{
 			_fsm.changeState(Game.GAME_STATE_PLAY);
-			trace("hello");
 		}
 		
 		override public function destroy():void{

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<game>
+	<world width="1280" height="720" />
+	<color>
+		<white hex="0xFFFFFF"/>
+		<black hex="0x111111"/>
+		<light_orange hex="0xff6735"/>
+	</color>
+
+	<entities color="0xFFFFFF" line_size="2">
+		<ship width="30" height="15" top_speed="10" friction="0.96" rate_of_fire="150" tot_lives="3"/>
+		<bullet impulse="20" time_to_live="30"/>
+		<asteroids>
+			<asteroid_small radius="19" starting_speed="10" child_type="" child_count="0"/>
+			<asteroid_medium radius="30" starting_speed="8" child_type="asteroid_small" child_count="2"/>
+			<asteroid_large radius="70" starting_speed="4" child_type="asteroid_medium" child_count="3"/>
+		</asteroids>
+		<ufo width="50" height="20" rate_of_fire="800" speed="4" chance_of_spawn="4" />
+	</entities>
+	
+	<sound>
+		<level>
+			<highest level="1"/>
+			<high level="0.7"/>
+			<normal level="0.5"/>
+			<low level="0.25"/>
+			<lowest level="0.1"/>
+		</level>
+		<sfx>
+			<sfx_shoot url="./assets/shoot.mp3" />
+			<sfx_explosion url="./assets/explosion.mp3" />
+			<sfx_hit url="./assets/hit.mp3" />
+			<sfx_background url="./assets/background.mp3" />
+		</sfx>
+	</sound>
+</game>

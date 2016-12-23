@@ -10,7 +10,7 @@ package gameObjects.GFX {
 		private static const fadeAwayConst:Number = 0.98;
 		
 		public function GFXKaboom(x:Number, y:Number) {
-			super(x, y, "KABOOM!", 22, Config.LIGHT_ORANGE);
+			super(x, y, "KABOOM!", 22, Config.getColor("hex", ["color", "light_orange"]));
 			_speedX = Utils.random(minSpeed, maxSpeed);
 			_speedY = Utils.random(minSpeed, maxSpeed);
 			_speedRotation = rotationSpeed;

@@ -1,10 +1,10 @@
 package core 
 {
 	public class SoundManager {
-		private var _sfxShoot:SimpleSound = new SimpleSound(Config.SFX_SHOOT_URL);
-		private var _sfxHit:SimpleSound = new SimpleSound(Config.SFX_HIT_URL);
-		private var _sfxExplosion:SimpleSound = new SimpleSound(Config.SFX_EXPLOSION_URL);
-		private var _soundBackground:SimpleSound = new SimpleSound(Config.SFX_BACKGROUND_URL, null, true, Config.SOUND_VERY_LOW);
+		private var _sfxShoot:SimpleSound = new SimpleSound(Config.getSettings("url", ["sound", "sfx", "sfx_shoot"]));
+		private var _sfxHit:SimpleSound = new SimpleSound(Config.getSettings("url", ["sound", "sfx", "sfx_hit"]));
+		private var _sfxExplosion:SimpleSound = new SimpleSound(Config.getSettings("url", ["sound", "sfx", "sfx_explosion"]));
+		private var _soundBackground:SimpleSound = new SimpleSound(Config.getSettings("url", ["sound", "sfx", "sfx_background"]), null, true, Config.getNumber("lowest", ["sound", "level"]));
 		public function SoundManager() { }
 		
 		public function playHit():void{

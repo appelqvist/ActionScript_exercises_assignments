@@ -4,7 +4,7 @@ package gameObjects
 	import core.Key;
 	import core.Config;
 	import events.PlayerHitEvent;
-	import events.PlayerShotEvent;
+	import events.ShotEvent;
 	import flash.geom.Point;
 	import flash.utils.getTimer;
 	import core.Utils;
@@ -15,11 +15,11 @@ package gameObjects
 		private var _thrust:Number = 1;
 		private var _nextShotIsAllowed:Number = 0;
 		private var _rearLeft:Point = new Point(0, 0);
-		private var _nose:Point = new Point(Config.SHIP_WIDTH, Config.SHIP_HEIGHT * 0.5);
-		private var _rearRight:Point = new Point(0, Config.SHIP_HEIGHT);
-		private var _engineHole:Point = new Point(Config.SHIP_WIDTH * 0.125, Config.SHIP_HEIGHT * 0.5);
+		private var _nose:Point = new Point(Config.getNumber("width", ["entities", "ship"]), Config.getNumber("height", ["entities", "ship"]) * 0.5);
+		private var _rearRight:Point = new Point(0, Config.getNumber("height", ["entities", "ship"]));
+		private var _engineHole:Point = new Point(Config.getNumber("width", ["entities", "ship"]) * 0.125, Config.getNumber("height", ["entities", "ship"]) * 0.5);
 		
-		private var _livesLeft:Number = Config.SHIP_TOT_LIVES;
+		private var _livesLeft:Number = Config.getNumber("tot_lives", ["entities", "ship"]);
 		
 		public function Ship(x:Number = 0, y:Number = 0) {
 			super(x, y);
@@ -29,8 +29,8 @@ package gameObjects
 		public function checkInput():void{
 			if (Key.isKeyPressed(Key.FIRE) && _nextShotIsAllowed <= getTimer()){
 				var globalNose:Point = localToGlobal(_nose);
-				dispatchEvent(new PlayerShotEvent(globalNose.x, globalNose.y, rotation));
-				_nextShotIsAllowed = getTimer() + Config.SHIP_RATE_OF_FIRE;
+				dispatchEvent(new ShotEvent(globalNose.x, globalNose.y, rotation));
+				_nextShotIsAllowed = getTimer() + Config.getNumber("rate_of_fire", ["entities", "ship"]);
 			}
 			
 			if (Key.isKeyPressed(Key.RIGHT)){
@@ -79,7 +79,7 @@ package gameObjects
 				_alive = false;
 			}
 			
-			var radians:Number = rotation * Config.TO_RAD
+			var radians:Number = Utils.convertToRad(rotation);
 			var ax:Number = Math.cos(radians) * _thrust;
 			var ay:Number = Math.sin(radians) * _thrust;
 			
@@ -89,9 +89,10 @@ package gameObjects
 			}
 			
 			//Adding friction to get easier control
-			_speedX *= Config.SHIP_FRICTION;
-			_speedY *= Config.SHIP_FRICTION;
-			_speedRotation *= Config.SHIP_FRICTION;
+			var friction:Number = Config.getNumber("friction", ["entities", "ship"])
+			_speedX *= friction
+			_speedY *= friction;
+			_speedRotation *= friction;
 			
 			draw();
 			if (_thrust){
@@ -103,7 +104,7 @@ package gameObjects
 		
 		public function draw():void{
 			graphics.clear();
-			graphics.lineStyle(Config.LINE_SIZE, _color);
+			graphics.lineStyle(Config.getNumber("line_size", ["entities"]), _color);
 			graphics.moveTo(_rearLeft.x, _rearLeft.y);
 			graphics.lineTo(_nose.x, _nose.y);
 			graphics.lineTo(_rearRight.x, _rearRight.y);
@@ -112,8 +113,8 @@ package gameObjects
 		}
 		
 		private function drawFlame():void{
-			graphics.lineStyle(Config.LINE_SIZE, _color);
-			var heightOfFlame:Number = Config.SHIP_HEIGHT;
+			graphics.lineStyle(Config.getNumber("line_size", ["entities"]), _color);
+			var heightOfFlame:Number = Config.getNumber("height", ["entities", "ship"]);
 			var lengthOfFlame:Number = Utils.random(2, 15);
 			graphics.moveTo(2, 1);
 			graphics.lineTo( -lengthOfFlame, heightOfFlame * 0.5);

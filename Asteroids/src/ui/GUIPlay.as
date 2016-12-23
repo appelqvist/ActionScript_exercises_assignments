@@ -15,9 +15,9 @@ package ui
 		
 		public function GUIPlay(x:Number = 0, y:Number = 0){
 			this.x = x, this.y = y;
-			_lblScore = new Label("0", 40, Config.WHITE, "Ostrich", true, 0, 0);
-			_lblScore.x = Config.WORLD_WIDTH - _lblScore.textWidth - _offset;
-			_lblScore.y = Config.WORLD_HEIGHT - _lblScore.textHeight - _offset;
+			_lblScore = new Label("0", 40, Config.getColor("hex", ["color", "light_orange"]), "Ostrich", true, 0, 0);
+			_lblScore.x = Config.getNumber("width", ["world"]) - _lblScore.textWidth - _offset;
+			_lblScore.y = Config.getNumber("height", ["world"]) - _lblScore.textHeight - _offset;
 			this.addChild(_lblScore);
 			super();
 			initLives();
@@ -25,8 +25,6 @@ package ui
 		
 		public function removeLive():void{
 			var bitmapIndex:Number = _lives.length - 1;
-			trace(bitmapIndex);
-			
 			if (bitmapIndex >= 0){
 				var h:Bitmap = _lives[bitmapIndex];
 				_lives.removeAt(bitmapIndex);
@@ -41,11 +39,11 @@ package ui
 		
 		public function updateScore(currentScore:Number):void{
 			_lblScore.text = "" + currentScore;
-			_lblScore.x = Config.WORLD_WIDTH - _lblScore.textWidth - _offset;
+			_lblScore.x = Config.getNumber("width", ["world"]) - _lblScore.textWidth - _offset;
 		}
 		
 		public function initLives():void{
-			var lives:Number = Config.SHIP_TOT_LIVES;
+			var lives:Number = Config.getNumber("tot_lives", ["entities", "ship"]);
 			var heartPic:Bitmap = Assets.getImage("Heart");
 			
 			for (var i:Number = 0; i < lives; i++){
