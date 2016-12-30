@@ -41,6 +41,8 @@ package states
 		private var _score:Number = 0;
 		private var _running:Boolean = true;
 		private var _guiOverLay:GUIPlay = new GUIPlay();
+		private var _isPaused:Boolean = false;
+		private var _rdyNewPauseClick:Boolean = true;
 		
 		private const ASTEROIDS_SPAWN:Array = [Asteroid.TYPE_LARGE, Asteroid.TYPE_MED];
 		
@@ -49,7 +51,6 @@ package states
 			_shipLivesLeft = Config.getNumber("tot_lives", ["entities", "ship"]);
 			_ship.addEventListener(ShotEvent.ON_SHOT, onFire, false, 0, true);
 			_ship.addEventListener(PlayerHitEvent.PLAYER_HIT, onShipGotHit, false, 0, true);
-			Key.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown, false, 0, true);
 			_guiOverLay.x = this.x;
 			_guiOverLay.y = this.y;
 			addChild(_guiOverLay);
@@ -70,12 +71,6 @@ package states
 			}
 			addChild(e);
 			swapChildren(_guiOverLay, e); //The overlay always highest
-		}
-		
-		private function onKeyDown(e:KeyboardEvent):void{
-			if (e.keyCode == Keyboard.R){
-				spawnAsteroids();
-			}
 		}
 		
 		private function spawnAsteroids():void{
@@ -222,31 +217,45 @@ package states
 			}
 		}
 		
-		override public function update():void{
-			
-			if (_asteroids.length < 5){
-				spawnAsteroids();
-			}
-			
-			var allEntities:Vector.<Entity> = getAllEntities(true);
-			for (var i:Number = 0; i < allEntities.length; i++){ 
-				allEntities[i].update();
-			}
-			
-			if (_ufo != null){
-				_ufo.update();
-			}else{
-				var random:Number = Utils.random(0, 1500);
-				if (random < Config.getNumber("chance_of_spawn", ["entities", "ufo"])){
-					_ufo = new UFO(0, 0, _ship);
-					addEntity(_ufo);
+		private function checkPause():void{
+			if (Key.isKeyPressed(Key.PAUSE_ESC) || Key.isKeyPressed(Key.PAUSE_P)){
+				if (_rdyNewPauseClick){
+					_guiOverLay.displayPauseLabel(!_isPaused);
+					_isPaused = !_isPaused;
 				}
+				_rdyNewPauseClick = false;
+			}else{
+				_rdyNewPauseClick = true;
 			}
-			
-			checkCollisions();
-			checkAllDeadEntities();
-			if (!_running){
-				_fsm.changeState(Game.GAME_STATE_GAMEOVER, _score);
+		}
+		
+		override public function update():void{
+			checkPause();
+			if (!_isPaused){
+				if (_asteroids.length < 5){
+					spawnAsteroids();
+				}
+				
+				var allEntities:Vector.<Entity> = getAllEntities(true);
+				for (var i:Number = 0; i < allEntities.length; i++){ 
+					allEntities[i].update();
+				}
+				
+				if (_ufo != null){
+					_ufo.update();
+				}else{
+					var random:Number = Utils.random(0, 1500);
+					if (random < Config.getNumber("chance_of_spawn", ["entities", "ufo"])){
+						_ufo = new UFO(0, 0, _ship);
+						addEntity(_ufo);
+					}
+				}
+				
+				checkCollisions();
+				checkAllDeadEntities();
+				if (!_running){
+					_fsm.changeState(Game.GAME_STATE_GAMEOVER, _score);
+				}
 			}
 		}
 		

@@ -18,7 +18,8 @@ package core {
 		public static const BREAK:uint = Keyboard.S;
 		public static const LEFT:uint = Keyboard.A;
 		public static const RIGHT:uint = Keyboard.D;
-		public static const PAUSE:uint = Keyboard.ESCAPE;
+		public static const PAUSE_ESC:uint = Keyboard.ESCAPE;
+		public static const PAUSE_P:uint = Keyboard.P;
 		
 		public static function init(s:Stage):void{
 			if (!_init){
