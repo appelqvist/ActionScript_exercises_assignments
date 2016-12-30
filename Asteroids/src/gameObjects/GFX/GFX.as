@@ -1,10 +1,7 @@
 package gameObjects.GFX 
 {
-	import com.adobe.tvsdk.mediacore.TextFormat;
 	import core.Entity;
 	import ui.Label;
-	import core.Config;
-	import core.Utils;;
 	
 	public class GFX extends Entity{
 		

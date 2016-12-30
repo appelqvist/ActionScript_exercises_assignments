@@ -8,8 +8,6 @@ package gameObjects
 	import flash.geom.Point;
 	import flash.utils.getTimer;
 	import core.Utils;
-	import flash.display.Sprite;
-	import states.Play;
 	
 	public class Ship extends Entity{
 		private var _thrust:Number = 1;

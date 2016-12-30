@@ -5,7 +5,6 @@ package ui
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	import flash.text.AntiAliasType;
-	import core.Config;
 
 	public class Label extends TextField {
 		

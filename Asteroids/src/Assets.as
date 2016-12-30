@@ -1,6 +1,6 @@
 package {
 	import flash.display.Bitmap;
-	Bitmap
+
 	public class Assets {
 		[Embed(source = "assets/OstrichSans-Heavy.otf",
 		fontName = "Ostrich",

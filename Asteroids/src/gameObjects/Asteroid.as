@@ -4,7 +4,6 @@ package gameObjects
 	import core.Config;
 	import core.Utils;
 	import events.AsteroidBreakEvent;
-	import flash.display.Sprite;
 	
 	public class Asteroid extends Entity{
 		public static const ASTEROID_BREAK:String = "asteroidBreak";

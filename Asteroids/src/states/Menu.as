@@ -7,7 +7,6 @@ package states
 	import core.Config;
 	import core.Key;
 	import core.Utils;
-	import flash.geom.Point;
 	import flash.events.KeyboardEvent;
 	
 	public class Menu extends State {

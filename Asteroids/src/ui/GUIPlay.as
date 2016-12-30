@@ -1,9 +1,7 @@
 package ui 
 {
-	import com.adobe.tvsdk.mediacore.TextFormat;
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import core.Config;
 	import core.Utils;

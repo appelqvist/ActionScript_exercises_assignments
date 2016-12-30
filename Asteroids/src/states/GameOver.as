@@ -7,7 +7,6 @@ package states
 	import ui.Label;
 	import core.Key;
 	import flash.events.KeyboardEvent;
-	import flash.utils.setInterval;
 	import core.Utils;
 	
 	public class GameOver extends State{

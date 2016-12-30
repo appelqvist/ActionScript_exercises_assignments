@@ -4,18 +4,11 @@ package states
 	import core.Entity;
 	import core.Game;
 	import core.Key;
-	import core.SimpleSound;
 	import core.SoundManager;
 	import core.State;
 	import events.AsteroidBreakEvent;
 	import events.PlayerHitEvent;
 	import events.UfoHitEvent;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.text.TextField;
-	import flash.ui.Keyboard;
-	import flash.geom.Point;
 	import gameObjects.Asteroid;
 	import gameObjects.Bullet;
 	import gameObjects.GFX.GFX;
@@ -26,7 +19,6 @@ package states
 	import core.Utils;
 	import gameObjects.GFX.GFXKaboom;
 	import gameObjects.UFO;
-	import ui.Label;
 	import ui.GUIPlay;
 
 	public class Play extends State{

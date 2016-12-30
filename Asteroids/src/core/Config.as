@@ -3,7 +3,6 @@ package core
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
     import flash.events.*;
-    import flash.net.*;
 	
 	public class Config {
 		private static var _dispatcher:EventDispatcher = new EventDispatcher; 

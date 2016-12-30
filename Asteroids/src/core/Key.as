@@ -2,7 +2,6 @@ package core {
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IEventDispatcher;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	

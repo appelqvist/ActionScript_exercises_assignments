@@ -1,16 +1,11 @@
 package core 
 {
-	import com.adobe.tvsdk.mediacore.ABRControlParameters;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.GestureEvent;
-	import flash.net.URLRequest;
 	import states.GameOver;
 	import states.Menu;
 	import states.Play;
-	import Assets;
-	
-	
+		
 	[SWF(width="1280", height="720", backgroundColor="0x111111", frameRate = "30")]
 	public class Game extends Sprite {
 		public static const ASSETS:Assets = new Assets();

@@ -6,7 +6,6 @@ package gameObjects
 	import events.ShotEvent;
 	import events.UfoHitEvent;
 	import flash.utils.getTimer;
-	import flash.geom.Point;
 	
 	public class UFO extends Entity {
 
