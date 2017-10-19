@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TextureAtlas imagePath="/assets/biplane_spritesheet.png" width="120" height="512">
+	<SubTexture name="detail1" x="0" y="0" width="120" height="64"/>
+	<SubTexture name="detail2" x="0" y="64" width="120" height="64"/>
+	<SubTexture name="detail3" x="0" y="128" width="120" height="64"/>
+	<SubTexture name="detail4" x="0" y="192" width="120" height="64"/>
+	<SubTexture name="body1" x="0" y="256" width="120" height="64"/>
+	<SubTexture name="body2" x="0" y="320" width="120" height="64"/>
+	<SubTexture name="body3" x="0" y="384" width="120" height="64"/>
+	<SubTexture name="body4" x="0" y="448" width="120" height="64"/>
+</TextureAtlas>

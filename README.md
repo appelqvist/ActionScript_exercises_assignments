@@ -4,4 +4,4 @@ Assignments and exercises in the course ActionScript3
 Exercise:
   World Bounds
   
-Assignments: [Pong](https://webshare.mah.se/ae7719/Pong/),   [Asteroids](https://webshare.mah.se/ae7719/Asteroids)
+  Assignments: [Pong](https://webshare.mah.se/ae7719/Pong/),   [Asteroids](https://webshare.mah.se/ae7719/Asteroids), [Biplanes](https://appelqvist.tech/biplanes)
